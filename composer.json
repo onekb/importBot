@@ -1,0 +1,21 @@
+{
+    "name": "onekb/import-bot",
+    "description": "导入机器人",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "onekb",
+            "email": "1@1kb.ren"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "phpoffice/phpspreadsheet": "^1.23",
+        "league/flysystem": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Onekb\\ImportBot\\": "src"
+        }
+    }
+}
