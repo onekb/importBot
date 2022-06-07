@@ -18,7 +18,7 @@ interface SheetInterface
 
     public function getRawData();
 
-    public function getTitles();
+    public function getTitle();
 
     public function getData();
 

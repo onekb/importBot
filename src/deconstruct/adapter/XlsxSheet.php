@@ -30,7 +30,7 @@ class XlsxSheet implements SheetInterface
 
     public function getColumnCount()
     {
-        return Coordinate::stringFromColumnIndex(count($this->getTitles()));
+        return Coordinate::stringFromColumnIndex(count($this->getTitle()));
     }
 
     public function getColumn($column)
@@ -53,16 +53,16 @@ class XlsxSheet implements SheetInterface
         return $this->sheet->toArray();
     }
 
-    public function getTitles()
+    public function getTitle()
     {
         $titleLine = $this->config['titleLine'] ?? 1;
 
-        $titles = $this->sheet->rangeToArray(
+        $title = $this->sheet->rangeToArray(
             'A' . $titleLine . ':' . $this->sheet->getHighestColumn() . $titleLine
         )[0];
 
         // 去除空列
-        return array_filter($titles, function ($title) {
+        return array_filter($title, function ($title) {
             return $title !== null;
         });
     }

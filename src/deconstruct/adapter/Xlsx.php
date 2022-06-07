@@ -6,6 +6,7 @@ use League\Flysystem\Filesystem;
 use Onekb\ImportBot\Deconstruct\Config;
 use Onekb\ImportBot\Deconstruct\Interfaces\FileInterface;
 use Onekb\ImportBot\Deconstruct\Interfaces\SheetInterface;
+use Onekb\ImportBot\Di;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use \PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -24,10 +25,8 @@ class Xlsx implements FileInterface
     protected function loadFile()
     {
         $tempFile = tempnam(sys_get_temp_dir(), 'xlsx');
-        $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(
-            __DIR__ . '/../../../'
-        );
-        $file = new Filesystem($adapter);
+
+        $file = Di::$container['filesystem'];
         $buffer = $file->readStream($this->file);
         file_put_contents($tempFile, $buffer);
         $reader = IOFactory::createReader('Xlsx');

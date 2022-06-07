@@ -11,11 +11,16 @@
     "require": {
         "php": ">=7.4",
         "phpoffice/phpspreadsheet": "^1.23",
-        "league/flysystem": "^3.0"
+        "league/flysystem": "^3.0",
+        "pimple/pimple": "^3.5",
+        "illuminate/validation": "^9.14"
     },
     "autoload": {
         "psr-4": {
             "Onekb\\ImportBot\\": "src"
-        }
+        },
+        "files": [
+            "src/load.php"
+        ]
     }
 }
