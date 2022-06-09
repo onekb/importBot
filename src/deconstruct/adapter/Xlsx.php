@@ -58,4 +58,24 @@ class Xlsx implements FileInterface
 
         return new XlsxSheet($sheet);
     }
+
+    public function getActiveSheet(): SheetInterface
+    {
+        $sheet = $this->excel->getActiveSheet();
+
+        return new XlsxSheet($sheet);
+    }
+
+    public function save($fileName = null)
+    {
+        $fileName = $fileName ?? $this->file;
+        $tempFile = tempnam(sys_get_temp_dir(), 'xlsx');
+        $writer = IOFactory::createWriter($this->excel, 'Xlsx');
+        $writer->save($tempFile);
+
+        $file = Di::$container['filesystem'];
+        $buffer = $file->readStream($tempFile);
+        file_put_contents($this->file, $buffer);
+        unlink($tempFile);
+    }
 }

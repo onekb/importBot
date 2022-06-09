@@ -22,4 +22,6 @@ interface SheetInterface
 
     public function getData();
 
+     public function setCellValueByColumnAndRow($column, $row, $value);
+
 }

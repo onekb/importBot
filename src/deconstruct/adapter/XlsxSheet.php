@@ -5,6 +5,7 @@ namespace Onekb\ImportBot\Deconstruct\Adapter;
 use Onekb\ImportBot\Deconstruct\Config;
 use Onekb\ImportBot\Deconstruct\Interfaces\SheetInterface;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class XlsxSheet implements SheetInterface
@@ -75,6 +76,19 @@ class XlsxSheet implements SheetInterface
         return $this->sheet->rangeToArray(
             'A' . $dateLine . ':' . $this->getColumnCount() . $this->getRowCount()
         );
+    }
+
+    // 设置单元格内容 根据列（数字）和行
+    public function setCellValueByColumnAndRow($column, $row, $value)
+    {
+        $this->sheet->setCellValueByColumnAndRow($column, $row, $value);
+    }
+
+    public function save($fileName = null)
+    {
+        $fileName = $fileName ?? $this->sheet->getTitle();
+        $writer = IOFactory::createWriter($this->sheet->getParent(), 'Xlsx');
+        $writer->save($fileName . '.xlsx');
     }
 
 }
