@@ -2,7 +2,7 @@
 
 namespace Onekb\ImportBot\Deconstruct\Adapter;
 
-use Onekb\ImportBot\Deconstruct\Config;
+use Onekb\ImportBot\Config;
 use Onekb\ImportBot\Deconstruct\Interfaces\SheetInterface;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -11,12 +11,12 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class XlsxSheet implements SheetInterface
 {
     protected Worksheet $sheet;
-    protected array $config;
+    protected Config $config;
 
-    public function __construct($sheet)
+    public function __construct($sheet, $config)
     {
         $this->sheet = $sheet;
-        $this->config = Config::getConfig($sheet->getTitle());
+        $this->config = $config;
     }
 
     public function getName()
@@ -56,7 +56,7 @@ class XlsxSheet implements SheetInterface
 
     public function getTitle()
     {
-        $titleLine = $this->config['titleLine'] ?? 1;
+        $titleLine = $this->config->title_line ?? 1;
 
         $title = $this->sheet->rangeToArray(
             'A' . $titleLine . ':' . $this->sheet->getHighestColumn() . $titleLine
@@ -71,7 +71,7 @@ class XlsxSheet implements SheetInterface
     // 获取数据
     public function getData()
     {
-        $dateLine = $this->config['dataStartLine'] ?? 2;
+        $dateLine = $this->config->data_start_line ?? 2;
 
         return $this->sheet->rangeToArray(
             'A' . $dateLine . ':' . $this->getColumnCount() . $this->getRowCount()
@@ -88,7 +88,10 @@ class XlsxSheet implements SheetInterface
     {
         $fileName = $fileName ?? $this->sheet->getTitle();
         $writer = IOFactory::createWriter($this->sheet->getParent(), 'Xlsx');
-        $writer->save($fileName . '.xlsx');
+        $fileName .= $fileName;
+        $writer->save($fileName);
+
+        return $fileName;
     }
 
 }

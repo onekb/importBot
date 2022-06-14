@@ -3,7 +3,7 @@
 namespace Onekb\ImportBot\Deconstruct\Adapter;
 
 use League\Flysystem\Filesystem;
-use Onekb\ImportBot\Deconstruct\Config;
+use Onekb\ImportBot\Config;
 use Onekb\ImportBot\Deconstruct\Interfaces\FileInterface;
 use Onekb\ImportBot\Deconstruct\Interfaces\SheetInterface;
 use Onekb\ImportBot\Di;
@@ -14,10 +14,12 @@ class Xlsx implements FileInterface
 {
     protected $file;
     protected Spreadsheet $excel;
+    protected Config $config;
 
-    public function __construct($file)
+    public function __construct($file, Config $config)
     {
         $this->file = $file;
+        $this->config = $config;
         $this->loadFile();
     }
 
@@ -56,14 +58,14 @@ class Xlsx implements FileInterface
             throw new \Exception('Sheet not found');
         }
 
-        return new XlsxSheet($sheet);
+        return new XlsxSheet($sheet, $this->config);
     }
 
     public function getActiveSheet(): SheetInterface
     {
         $sheet = $this->excel->getActiveSheet();
 
-        return new XlsxSheet($sheet);
+        return new XlsxSheet($sheet, $this->config);
     }
 
     public function save($fileName = null)

@@ -2,6 +2,7 @@
 
 namespace Onekb\ImportBot\Processing\Adapter;
 
+use Onekb\ImportBot\Config;
 use Onekb\ImportBot\Deconstruct\Adapter\Xlsx;
 use Onekb\ImportBot\Deconstruct\Interfaces\FileInterface;
 use Onekb\ImportBot\Deconstruct\Interfaces\SheetInterface;
@@ -14,19 +15,19 @@ class XlsxOutputError implements OutputErrorInterface
 {
     protected FileInterface $excel;
     protected SheetInterface $sheet;
-    protected array $config;
+    protected ?Config $config;
 
-    public function __construct($config, $errorTemplate)
+    public function __construct(Config $config, $errorTemplate)
     {
         $this->config = $config;
-        $this->excel = new Xlsx($errorTemplate);
-        $this->sheet = $this->excel->getActiveSheet();
+        $this->excel = new Xlsx($errorTemplate, $config);
+        $this->sheet = $this->excel->getSheet($this->config->sheet_name);
     }
 
     public function output(array $data, $fileName = null)
     {
         $title = $this->sheet->getTitle();
-        $dataStartLine = $this->config['dataStartLine'];
+        $dataStartLine = $this->config->data_start_line;
         $column = count($title) + 1;
         foreach ($data as $key => $value) {
             $errorArr = [];
@@ -40,8 +41,23 @@ class XlsxOutputError implements OutputErrorInterface
             );
         }
 
-        $this->sheet->save($fileName);
+        return $this->sheet->save($fileName);
     }
 
+    public function outputError(array $data, $fileName = null)
+    {
+        $dataStartLine = $this->config->data_start_line;
+        foreach ($data as $row => $item) {
+            foreach ($item as $column => $value) {
+                $this->sheet->setCellValueByColumnAndRow(
+                    $column + 1,
+                    $row + $dataStartLine,
+                    $value
+                );
+            }
+        }
+
+        return $this->sheet->save($fileName);
+    }
 
 }

@@ -11,9 +11,9 @@
     "require": {
         "php": ">=7.4",
         "phpoffice/phpspreadsheet": "^1.23",
-        "league/flysystem": "^3.0",
+        "league/flysystem": "^2.0",
         "pimple/pimple": "^3.5",
-        "illuminate/validation": "^9.14"
+        "hyperf/validation": "^2.2"
     },
     "autoload": {
         "psr-4": {

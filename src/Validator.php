@@ -2,10 +2,15 @@
 
 namespace Onekb\ImportBot;
 
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Translation\FileLoader;
-use Illuminate\Translation\Translator;
-use Illuminate\Validation\Factory;
+//use Illuminate\Filesystem\Filesystem;
+//use Illuminate\Translation\FileLoader;
+//use Illuminate\Translation\Translator;
+//use Illuminate\Validation\Factory;
+
+use Hyperf\Utils\Filesystem\Filesystem;
+use Hyperf\Translation\FileLoader;
+use Hyperf\Translation\Translator;
+use Hyperf\Validation\ValidatorFactory;
 
 class Validator
 {
@@ -22,7 +27,7 @@ class Validator
             $translation_locale = 'zh_cn';
             $translation_file_loader = new FileLoader(new Filesystem(), $translation_path);
             $translator = new Translator($translation_file_loader, $translation_locale);
-            $validator = new Factory($translator);
+            $validator = new ValidatorFactory($translator);
         }
 
         return $validator;
