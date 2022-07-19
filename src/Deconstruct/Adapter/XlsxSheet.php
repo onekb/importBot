@@ -5,7 +5,9 @@ namespace Onekb\ImportBot\Deconstruct\Adapter;
 use Onekb\ImportBot\Config;
 use Onekb\ImportBot\Deconstruct\Interfaces\SheetInterface;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class XlsxSheet implements SheetInterface
@@ -82,6 +84,19 @@ class XlsxSheet implements SheetInterface
     public function setCellValueByColumnAndRow($column, $row, $value)
     {
         $this->sheet->setCellValueByColumnAndRow($column, $row, $value);
+    }
+
+    // 设置单元格内容 根据列（字符串）和行 支持定义类型
+    public function setCellValueByColumnAndRowAndType(
+        $column,
+        $row,
+        $value,
+        $type = DataType::TYPE_STRING
+    ) {
+        $this->sheet->getCell(Coordinate::stringFromColumnIndex($column) . $row)->setValueExplicit(
+            $value,
+            $type
+        );
     }
 
     public function save($fileName = null)
