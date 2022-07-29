@@ -74,10 +74,16 @@ class XlsxSheet implements SheetInterface
     public function getData()
     {
         $dateLine = $this->config->data_start_line ?? 2;
+        $datas = [];
+        $columnCount = $this->getColumnCount();
+        for ($i = $dateLine; $i <= $this->getRowCount(); $i++) {
+            $data = $this->sheet->rangeToArray('A' . $i . ':' . $columnCount . $i)[0];
+            if (join('', $data)) {
+                $datas[] = $data;
+            }
+        }
 
-        return $this->sheet->rangeToArray(
-            'A' . $dateLine . ':' . $this->getColumnCount() . $this->getRowCount()
-        );
+        return $datas;
     }
 
     // 设置单元格内容 根据列（数字）和行
