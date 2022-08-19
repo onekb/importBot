@@ -9,4 +9,9 @@ $container['filesystem'] = function ($c) {
     );
 };
 
+// 注册验证器
+$container[\Hyperf\Validation\Contract\ValidatorFactoryInterface::class] = function ($c) {
+    return \Onekb\ImportBot\Validator::getInstance();
+};
+
 \Onekb\ImportBot\Di::$container = $container;

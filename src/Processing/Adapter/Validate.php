@@ -3,7 +3,9 @@
 namespace Onekb\ImportBot\Processing\Adapter;
 
 //use Illuminate\Support\Facades\Validator;
+use Hyperf\Validation\Contract\ValidatorFactoryInterface;
 use Onekb\ImportBot\Deconstruct\Interfaces\SheetInterface;
+use Onekb\ImportBot\Di;
 use Onekb\ImportBot\Processing\Interfaces\ValidateInterface;
 use Onekb\ImportBot\Validator;
 
@@ -33,7 +35,9 @@ class Validate implements ValidateInterface
         foreach ($this->datas as $key => $value) {
             // 验证
             if ($data = array_combine($this->title, $value)) {
-                $validator = Validator::make(
+                /** @var ValidatorFactoryInterface $validatorFactory */
+                $validatorFactory = Di::$container[ValidatorFactoryInterface::class];
+                $validator = $validatorFactory->make(
                     $data,
                     $this->rules,
                     $this->messages
