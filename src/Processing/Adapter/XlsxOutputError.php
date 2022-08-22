@@ -34,7 +34,7 @@ class XlsxOutputError implements OutputErrorInterface
             array_map(function ($item) use (&$errorArr) {
                 $errorArr += $item;
             }, $value);
-            $this->sheet->setCellValueByColumnAndRow(
+            $this->sheet->setCellValueByColumnAndRowAndType(
                 $column,
                 $key + $dataStartLine,
                 join(',', $errorArr)
@@ -49,7 +49,7 @@ class XlsxOutputError implements OutputErrorInterface
         $dataStartLine = $this->config->data_start_line;
         foreach ($data as $row => $item) {
             foreach ($item as $column => $value) {
-                $this->sheet->setCellValueByColumnAndRow(
+                $this->sheet->setCellValueByColumnAndRowAndType(
                     $column + 1,
                     $row + $dataStartLine,
                     $value
