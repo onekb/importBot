@@ -32,6 +32,7 @@ class Xlsx implements FileInterface
         $buffer = $file->readStream($this->file);
         file_put_contents($tempFile, $buffer);
         $reader = IOFactory::createReader('Xlsx');
+        $reader->setReadDataOnly(true);
         $this->excel = $reader->load($tempFile);
         unlink($tempFile);
     }
