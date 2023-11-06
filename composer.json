@@ -11,7 +11,7 @@
     "require": {
         "php": ">=7.4",
         "phpoffice/phpspreadsheet": "^1.23",
-        "league/flysystem": "^2.0",
+        "league/flysystem": "*",
         "pimple/pimple": "^3.5",
         "hyperf/validation": "*"
     },
